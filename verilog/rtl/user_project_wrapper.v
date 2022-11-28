@@ -79,7 +79,8 @@ module user_project_wrapper #(
 );
 
 wire [3:0] memenb;
-wire [9:0] adr_mem;
+wire [8:0] adr_mem;
+//wire [9:0] adr_mem;
 wire [11:0] adr_cpu;
 wire [15:0] cpdatin, cpdatout, memdatin0, memdatin1, memdatin2, memdatin3, memdatout;
 wire cpuen, cpurw, memrwb, enkbd, endisp, rst, clk;
@@ -163,116 +164,118 @@ cpu cpu0 (
     .display(io_out[29:22]) 
 );
 
-sky130_sram_1kbyte_1rw1r_8x1024_8 #(.NUM_WMASKS(2)) memLword0 (
+gf180mcu_fd_ip_sram__sram512x8m8wm1 memLword0 (
 `ifdef USE_POWER_PINS
-    .vccd1(vccd1),	// User area 1 1.8V power
-    .vssd1(vssd1),	// User area 1 digital ground
+    .VDD(vccd1),	// User area 1 1.8V power
+    .VSS(vssd1),	// User area 1 digital ground
 `endif
-    .clk0(clk),
-    .addr0(adr_mem),
-    .din0(memdatout[7:0]),
-    .dout0(memdatin0[7:0]),
-    .web0(memrwb),
-    .csb0(memenb[0]),
-    .wmask0({cpuen, cpuen})
+    .CLK(clk),
+    .A(adr_mem),
+    .D(memdatout[7:0]),
+    .Q(memdatin0[7:0]),
+    .GWEN(memrwb),
+    .CEN(memenb[0]),
+    .WEN({8{cpuen}})
 );
-    sky130_sram_1kbyte_1rw1r_8x1024_8 #(.NUM_WMASKS(2)) memHword0 (
+    gf180mcu_fd_ip_sram__sram512x8m8wm1 memHword0 (
 `ifdef USE_POWER_PINS
-    .vccd1(vccd1),	// User area 1 1.8V power
-    .vssd1(vssd1),	// User area 1 digital ground
+    .VDD(vccd1),	// User area 1 1.8V power
+    .VSS(vssd1),	// User area 1 digital ground
 `endif
-    .clk0(clk),
-    .addr0(adr_mem),
-    .din0(memdatout[15:8]),
-    .dout0(memdatin0[15:8]),
-    .web0(memrwb),
-    .csb0(memenb[0]),
-    .wmask0({cpuen, cpuen})
-);
-
-sky130_sram_1kbyte_1rw1r_8x1024_8 #(.NUM_WMASKS(2)) memLword1 (
-`ifdef USE_POWER_PINS
-    .vccd1(vccd1),	// User area 1 1.8V power
-    .vssd1(vssd1),	// User area 1 digital ground
-`endif
-    .clk0(clk),
-    .addr0(adr_mem),
-    .din0(memdatout[7:0]),
-    .dout0(memdatin1[7:0]),
-    .web0(memrwb),
-    .csb0(memenb[1]),
-    .wmask0({cpuen, cpuen})
+    .CLK(clk),
+    .A(adr_mem),
+    .D(memdatout[15:8]),
+    .Q(memdatin0[15:8]),
+    .GWEN(memrwb),
+    .CEN(memenb[0]),
+    .WEN({8{cpuen}})
 );
 
-    sky130_sram_1kbyte_1rw1r_8x1024_8 #(.NUM_WMASKS(2)) memHword1 (
+/*
+gf180mcu_fd_ip_sram__sram512x8m8wm1 memLword1 (
 `ifdef USE_POWER_PINS
-    .vccd1(vccd1),	// User area 1 1.8V power
-    .vssd1(vssd1),	// User area 1 digital ground
+    .VDD(vccd1),	// User area 1 1.8V power
+    .VSS(vssd1),	// User area 1 digital ground
 `endif
-    .clk0(clk),
-    .addr0(adr_mem),
-    .din0(memdatout[15:8]),
-    .dout0(memdatin1[15:8]),
-    .web0(memrwb),
-    .csb0(memenb[1]),
-    .wmask0({cpuen, cpuen})
+    .CLK(clk),
+    .A(adr_mem),
+    .D(memdatout[7:0]),
+    .Q(memdatin1[7:0]),
+    .GWEN(memrwb),
+    .CEN(memenb[1]),
+    .WEN({8{cpuen}})
 );
 
-sky130_sram_1kbyte_1rw1r_8x1024_8 #(.NUM_WMASKS(2)) memLword2 (
+    gf180mcu_fd_ip_sram__sram512x8m8wm1 memHword1 (
 `ifdef USE_POWER_PINS
-    .vccd1(vccd1),	// User area 1 1.8V power
-    .vssd1(vssd1),	// User area 1 digital ground
+    .VDD(vccd1),	// User area 1 1.8V power
+    .VSS(vssd1),	// User area 1 digital ground
 `endif
-    .clk0(clk),
-    .addr0(adr_mem),
-    .din0(memdatout[7:0]),
-    .dout0(memdatin2[7:0]),
-    .web0(memrwb),
-    .csb0(memenb[2]),
-    .wmask0({cpuen, cpuen})
+    .CLK(clk),
+    .A(adr_mem),
+    .D(memdatout[15:8]),
+    .Q(memdatin1[15:8]),
+    .GWEN(memrwb),
+    .CEN(memenb[1]),
+    .WEN({8{cpuen}})
 );
 
-    sky130_sram_1kbyte_1rw1r_8x1024_8 #(.NUM_WMASKS(2)) memHword2 (
+gf180mcu_fd_ip_sram__sram512x8m8wm1 memLword2 (
 `ifdef USE_POWER_PINS
-    .vccd1(vccd1),	// User area 1 1.8V power
-    .vssd1(vssd1),	// User area 1 digital ground
+    .VDD(vccd1),	// User area 1 1.8V power
+    .VSS(vssd1),	// User area 1 digital ground
 `endif
-    .clk0(clk),
-    .addr0(adr_mem),
-    .din0(memdatout[15:8]),
-    .dout0(memdatin2[15:8]),
-    .web0(memrwb),
-    .csb0(memenb[2]),
-    .wmask0({cpuen, cpuen})
+    .CLK(clk),
+    .A(adr_mem),
+    .D(memdatout[7:0]),
+    .Q(memdatin2[7:0]),
+    .GWEN(memrwb),
+    .CEN(memenb[2]),
+    .WEN({8{cpuen}})
 );
 
-sky130_sram_1kbyte_1rw1r_8x1024_8 #(.NUM_WMASKS(2)) memLword3 (
+    gf180mcu_fd_ip_sram__sram512x8m8wm1 memHword2 (
 `ifdef USE_POWER_PINS
-    .vccd1(vccd1),	// User area 1 1.8V power
-    .vssd1(vssd1),	// User area 1 digital ground
+    .VDD(vccd1),	// User area 1 1.8V power
+    .VSS(vssd1),	// User area 1 digital ground
 `endif
-    .clk0(clk),
-    .addr0(adr_mem),
-    .din0(memdatout[7:0]),
-    .dout0(memdatin3[7:0]),
-    .web0(memrwb),
-    .csb0(memenb[3]),
-    .wmask0({cpuen, cpuen})
+    .CLK(clk),
+    .A(adr_mem),
+    .D(memdatout[15:8]),
+    .Q(memdatin2[15:8]),
+    .GWEN(memrwb),
+    .CEN(memenb[2]),
+    .WEN({8{cpuen}})
 );
 
-    sky130_sram_1kbyte_1rw1r_8x1024_8 #(.NUM_WMASKS(2)) memHword3 (
+gf180mcu_fd_ip_sram__sram512x8m8wm1 memLword3 (
 `ifdef USE_POWER_PINS
-    .vccd1(vccd1),	// User area 1 1.8V power
-    .vssd1(vssd1),	// User area 1 digital ground
+    .VDD(vccd1),	// User area 1 1.8V power
+    .VSS(vssd1),	// User area 1 digital ground
 `endif
-    .clk0(clk),
-    .addr0(adr_mem),
-    .din0(memdatout[15:8]),
-    .dout0(memdatin3[15:8]),
-    .web0(memrwb),
-    .csb0(memenb[3]),
-    .wmask0({cpuen, cpuen})
+    .CLK(clk),
+    .A(adr_mem),
+    .D(memdatout[7:0]),
+    .Q(memdatin3[7:0]),
+    .GWEN(memrwb),
+    .CEN(memenb[3]),
+    .WEN({8{cpuen}})
 );
+
+    gf180mcu_fd_ip_sram__sram512x8m8wm1 memHword3 (
+`ifdef USE_POWER_PINS
+    .VDD(vccd1),	// User area 1 1.8V power
+    .VSS(vssd1),	// User area 1 digital ground
+`endif
+    .CLK(clk),
+    .A(adr_mem),
+    .D(memdatout[15:8]),
+    .Q(memdatin3[15:8]),
+    .GWEN(memrwb),
+    .CEN(memenb[3]),
+    .WEN({8{cpuen}})
+);
+*/
 
 endmodule	// user_project_wrapper
 

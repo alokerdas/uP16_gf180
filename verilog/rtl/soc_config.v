@@ -85,7 +85,8 @@ module soc_config #(
     input [15:0] data_from_mem2,
     input [15:0] data_from_mem3,
     output [15:0] data_to_mem,
-    output [9:0] addr_to_mem,
+    output [8:0] addr_to_mem,
+//    output [9:0] addr_to_mem,
     output [3:0] en_to_memB,
     output rw_to_mem,
     output en_keyboard,
@@ -127,7 +128,8 @@ module soc_config #(
     // Provision to read/write ram from LA
     assign data_to_mem = la_data_in[127] ? la_data_in[126:111] : data_from_cpu;
     assign addr_to_decod = la_data_in[127] ? la_data_in[110:109] : addr_from_cpu[11:10];
-    assign addr_to_mem = la_data_in[127] ? la_data_in[108:99] : addr_from_cpu[9:0];
+    assign addr_to_mem = la_data_in[127] ? la_data_in[107:99] : addr_from_cpu[8:0];
+//    assign addr_to_mem = la_data_in[127] ? la_data_in[108:99] : addr_from_cpu[9:0];
     assign rw_to_mem = la_data_in[127] ? la_data_in[98] : ~rw_from_cpu; // active low for openram
     assign en_to_decod = la_data_in[127] ? la_data_in[97] : en_from_cpu;
     assign data_from_mem = addr_to_decod[1] ? ( addr_to_decod [0] ? data_from_mem3 : data_from_mem2 ) : ( addr_to_decod[0] ? data_from_mem1 : data_from_mem0 );
